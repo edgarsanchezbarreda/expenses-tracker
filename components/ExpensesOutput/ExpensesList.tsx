@@ -1,9 +1,22 @@
-import { StyleSheet, Text, View, FlatList } from 'react-native';
+import {
+    StyleSheet,
+    Text,
+    View,
+    FlatList,
+    ListRenderItemInfo,
+} from 'react-native';
 import React from 'react';
 import { ExpensesProps } from './ExpensesOutput';
 
 // Figure out how to correctly type this
-const renderExpenseItem = (itemData: any) => {
+type ExpenseItem = {
+    id: string;
+    amount: number;
+    description: string;
+    date: string | Date;
+};
+
+const renderExpenseItem = (itemData: ListRenderItemInfo<ExpenseItem>) => {
     return <Text>{itemData.item.description}</Text>;
 };
 
