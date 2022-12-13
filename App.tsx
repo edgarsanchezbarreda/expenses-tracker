@@ -57,7 +57,7 @@ const ExpensesOverview = () => {
 export default function App() {
     return (
         <>
-            <StatusBar style='auto' />
+            <StatusBar style='light' />
             {/* This contains the main navigator with the bottom tab navigator nested within a stack navigator  */}
             <NavigationContainer>
                 <Stack.Navigator>

@@ -7,17 +7,17 @@ import {
 } from 'react-native';
 import React from 'react';
 import { ExpensesProps } from './ExpensesOutput';
+import ExpenseItem from './ExpenseItem';
 
-// Figure out how to correctly type this
-type ExpenseItem = {
-    id: string;
+export type ExpenseItem = {
+    id?: string;
     amount: number;
     description: string;
     date: string | Date;
 };
 
 const renderExpenseItem = (itemData: ListRenderItemInfo<ExpenseItem>) => {
-    return <Text>{itemData.item.description}</Text>;
+    return <ExpenseItem {...itemData.item} />;
 };
 
 const ExpensesList: React.FC<ExpensesProps> = ({ expenses }) => {
