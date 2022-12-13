@@ -3,14 +3,30 @@ import React from 'react';
 import { ExpenseItem as ExpenseItemProps } from './ExpensesList';
 import { GlobalStyles } from '../../constants/styles';
 import { getFormattedDate } from '../../util/date';
+import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 const ExpenseItem: React.FC<ExpenseItemProps> = ({
+    id,
     description,
     amount,
     date,
 }) => {
+    // const navigation = useNavigation();
+    // This is a react native bug that occurs for some reason.
+    // Below is a solution found on Stack Overflow
+    const navigation = useNavigation<NativeStackNavigationProp<any>>();
+
+    const expensePressHandler = () => {
+        navigation.navigate('ManageExpense', { expenseId: id });
+    };
+
     return (
-        <Pressable>
+        <Pressable
+            onPress={expensePressHandler}
+            style={({ pressed }) => pressed && styles.pressed}
+            android_ripple={{ color: '#ccc' }}
+        >
             <View style={styles.expenseItem}>
                 <View>
                     <Text style={[styles.textBase, styles.description]}>
@@ -21,7 +37,7 @@ const ExpenseItem: React.FC<ExpenseItemProps> = ({
                     </Text>
                 </View>
                 <View style={styles.amountContainer}>
-                    <Text style={styles.amount}>{amount}</Text>
+                    <Text style={styles.amount}>${amount.toFixed(2)}</Text>
                 </View>
             </View>
         </Pressable>
@@ -59,9 +75,13 @@ const styles = StyleSheet.create({
         paddingVertical: 4,
         backgroundColor: 'white',
         borderRadius: 4,
+        width: 80,
     },
     amount: {
         color: GlobalStyles.colors.primary500,
         fontWeight: 'bold',
+    },
+    pressed: {
+        opacity: 0.75,
     },
 });

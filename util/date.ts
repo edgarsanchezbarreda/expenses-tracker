@@ -1,3 +1,7 @@
 export const getFormattedDate = (date: Date) => {
-    return `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`;
+    // Return a string of a formatted date
+
+    // 'Month' needs to add 1 to it because it returns the index of whatever date is given to it.
+    // EX: month '01' (January) would return '0'. month '12' (December) would return '11'
+    return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
 };
