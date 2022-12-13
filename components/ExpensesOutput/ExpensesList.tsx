@@ -13,7 +13,7 @@ export type ExpenseItem = {
     id?: string;
     amount: number;
     description: string;
-    date: string | Date;
+    date: Date;
 };
 
 const renderExpenseItem = (itemData: ListRenderItemInfo<ExpenseItem>) => {

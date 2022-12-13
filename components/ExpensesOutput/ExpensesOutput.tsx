@@ -9,7 +9,7 @@ export type ExpensesProps = {
         id: string;
         amount: number;
         description: string;
-        date: string | Date;
+        date: Date;
     }[];
     expensesPeriod?: string;
 };

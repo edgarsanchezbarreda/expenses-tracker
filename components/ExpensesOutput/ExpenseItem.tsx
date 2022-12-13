@@ -19,7 +19,6 @@ const ExpenseItem: React.FC<ExpenseItemProps> = ({
                     <Text style={styles.textBase}>
                         {getFormattedDate(date)}
                     </Text>
-                    {/* <Text style={styles.textBase}>{date.toString()}</Text> */}
                 </View>
                 <View style={styles.amountContainer}>
                     <Text style={styles.amount}>{amount}</Text>
