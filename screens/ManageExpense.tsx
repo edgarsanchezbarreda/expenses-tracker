@@ -1,8 +1,9 @@
 import { Button, StyleSheet, Text, View } from 'react-native';
-import React, { useLayoutEffect } from 'react';
+import React, { useContext, useLayoutEffect } from 'react';
 import IconButton from '../components/UI/IconButton';
 import { GlobalStyles } from '../constants/styles';
 import CustomButton from '../components/UI/CustomButton';
+import { ExpensesContext } from '../store/expenses-context';
 
 export type ScreenNavigation = {
     navigation?: any;
@@ -10,6 +11,8 @@ export type ScreenNavigation = {
 };
 
 const ManageExpense: React.FC<ScreenNavigation> = ({ route, navigation }) => {
+    const expenseContext = useContext(ExpensesContext);
+
     const editedExpenseId = route.params?.expenseId;
     const isEditing = !!editedExpenseId;
 
@@ -22,6 +25,7 @@ const ManageExpense: React.FC<ScreenNavigation> = ({ route, navigation }) => {
     }, [navigation, isEditing]);
 
     const deleteExpenseHandler = () => {
+        expenseContext.deleteExpense(editedExpenseId);
         navigation.goBack();
     };
 
@@ -30,6 +34,19 @@ const ManageExpense: React.FC<ScreenNavigation> = ({ route, navigation }) => {
     };
 
     const confirmHandler = () => {
+        if (isEditing) {
+            expenseContext.updateExpense(editedExpenseId, {
+                description: 'test',
+                amount: 19.99,
+                date: new Date('2022-12-01'),
+            });
+        } else {
+            expenseContext.addExpense({
+                description: 'test',
+                amount: 19.99,
+                date: new Date('2022-12-01'),
+            });
+        }
         navigation.goBack();
     };
 

@@ -7,7 +7,7 @@ const ExpensesSummary: React.FC<ExpensesProps> = ({
     expenses,
     expensesPeriod,
 }) => {
-    const expensesSum: number = expenses!.reduce((sum, expense) => {
+    const expensesSum: number | string = expenses!.reduce((sum, expense) => {
         return sum + expense.amount;
     }, 0);
 

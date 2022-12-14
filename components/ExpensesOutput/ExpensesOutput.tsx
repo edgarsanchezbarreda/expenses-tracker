@@ -5,7 +5,7 @@ import ExpensesSummary from './ExpensesSummary';
 import { GlobalStyles } from '../../constants/styles';
 
 export type ExpensesProps = {
-    expenses?: {
+    expenses: {
         id: string;
         amount: number;
         description: string;
@@ -21,10 +21,10 @@ const ExpensesOutput: React.FC<ExpensesProps> = ({
     return (
         <View style={styles.container}>
             <ExpensesSummary
-                expenses={DUMMY_EXPENSES}
+                expenses={expenses}
                 expensesPeriod={expensesPeriod}
             />
-            <ExpensesList expenses={DUMMY_EXPENSES} />
+            <ExpensesList expenses={expenses} />
         </View>
     );
 };
