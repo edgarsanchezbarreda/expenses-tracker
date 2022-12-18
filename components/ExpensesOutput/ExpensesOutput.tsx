@@ -1,4 +1,4 @@
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, Text } from 'react-native';
 import React from 'react';
 import ExpensesList from './ExpensesList';
 import ExpensesSummary from './ExpensesSummary';
@@ -12,19 +12,28 @@ export type ExpensesProps = {
         date: Date;
     }[];
     expensesPeriod?: string;
+    fallBackText?: string;
 };
 
 const ExpensesOutput: React.FC<ExpensesProps> = ({
     expenses,
     expensesPeriod,
+    fallBackText,
 }) => {
+    let content = <Text style={styles.fallBackText}>{fallBackText}</Text>;
+
+    if (expenses.length > 0) {
+        content = <ExpensesList expenses={expenses} />;
+    }
+
     return (
         <View style={styles.container}>
             <ExpensesSummary
                 expenses={expenses}
                 expensesPeriod={expensesPeriod}
             />
-            <ExpensesList expenses={expenses} />
+            {/* <ExpensesList expenses={expenses} /> */}
+            {content}
         </View>
     );
 };
@@ -36,5 +45,11 @@ const styles = StyleSheet.create({
         flex: 1,
         padding: 24,
         backgroundColor: GlobalStyles.colors.primary700,
+    },
+    fallBackText: {
+        marginTop: 32,
+        textAlign: 'center',
+        color: 'white',
+        fontSize: 16,
     },
 });

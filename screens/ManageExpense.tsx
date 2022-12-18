@@ -1,9 +1,11 @@
-import { Button, StyleSheet, Text, View } from 'react-native';
+import { Button, StyleSheet, Text, View, TextInput } from 'react-native';
 import React, { useContext, useLayoutEffect } from 'react';
 import IconButton from '../components/UI/IconButton';
 import { GlobalStyles } from '../constants/styles';
 import CustomButton from '../components/UI/CustomButton';
 import { ExpensesContext } from '../store/expenses-context';
+import Input from '../components/ManageExpense/Input';
+import ExpenseForm from '../components/ManageExpense/ExpenseForm';
 
 export type ScreenNavigation = {
     navigation?: any;
@@ -16,9 +18,11 @@ const ManageExpense: React.FC<ScreenNavigation> = ({ route, navigation }) => {
     const editedExpenseId = route.params?.expenseId;
     const isEditing = !!editedExpenseId;
 
-    useLayoutEffect(() => {
-        console.log(editedExpenseId);
+    const selectedExpense = expenseContext.expenses.find(
+        expense => expense.id === editedExpenseId
+    );
 
+    useLayoutEffect(() => {
         navigation.setOptions({
             title: isEditing ? 'Edit Expense' : 'Add Expense',
         });
@@ -33,40 +37,28 @@ const ManageExpense: React.FC<ScreenNavigation> = ({ route, navigation }) => {
         navigation.goBack();
     };
 
-    const confirmHandler = () => {
+    const confirmHandler = (expenseData: {
+        description: string;
+        amount: number;
+        date: Date;
+    }) => {
         if (isEditing) {
-            expenseContext.updateExpense(editedExpenseId, {
-                description: 'test',
-                amount: 19.99,
-                date: new Date('2022-12-01'),
-            });
+            expenseContext.updateExpense(editedExpenseId, expenseData);
         } else {
-            expenseContext.addExpense({
-                description: 'test',
-                amount: 19.99,
-                date: new Date('2022-12-01'),
-            });
+            expenseContext.addExpense(expenseData);
         }
         navigation.goBack();
     };
 
     return (
         <View style={styles.screenContainer}>
-            <View style={styles.customButtonContainer}>
-                <CustomButton
-                    style={styles.customButton}
-                    mode='flat'
-                    onPress={cancelHandler}
-                >
-                    Cancel
-                </CustomButton>
-                <CustomButton
-                    style={styles.customButton}
-                    onPress={confirmHandler}
-                >
-                    {isEditing ? 'Update' : 'Add'}
-                </CustomButton>
-            </View>
+            <ExpenseForm
+                onCancel={cancelHandler}
+                onSubmit={confirmHandler}
+                submitButtonLabel={isEditing ? 'Update' : 'Add'}
+                selectedExpense={selectedExpense}
+            />
+
             {isEditing && (
                 <View style={styles.deleteButtonContainer}>
                     <IconButton
@@ -95,14 +87,5 @@ const styles = StyleSheet.create({
         paddingTop: 8,
         borderTopWidth: 2,
         borderTopColor: GlobalStyles.colors.primary200,
-    },
-    customButtonContainer: {
-        flexDirection: 'row',
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    customButton: {
-        minWidth: 120,
-        marginHorizontal: 8,
     },
 });
