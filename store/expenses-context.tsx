@@ -36,10 +36,12 @@ import React, { createContext, useReducer, useState } from 'react';
 type ExpensesContextType = {
     expenses: { id: string; amount: number; description: string; date: Date }[];
     addExpense: ({
+        id,
         description,
         amount,
         date,
     }: {
+        id: string;
         description: string;
         amount: number;
         date: Date;

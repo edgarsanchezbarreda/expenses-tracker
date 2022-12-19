@@ -8,6 +8,7 @@ import { GlobalStyles } from '../../constants/styles';
 type ExpenseFormProps = {
     onCancel: () => void;
     onSubmit: (expenseData: {
+        id: string;
         description: string;
         amount: number;
         date: Date;
@@ -28,6 +29,10 @@ const ExpenseForm: React.FC<ExpenseFormProps> = ({
     selectedExpense,
 }) => {
     const initialInputState = {
+        id: {
+            value: selectedExpense ? selectedExpense.id : '',
+            isValid: true,
+        },
         amount: {
             value: selectedExpense
                 ? selectedExpense.amount.toFixed(2).toString()
@@ -64,11 +69,13 @@ const ExpenseForm: React.FC<ExpenseFormProps> = ({
 
     const submitHandler = () => {
         const expenseData = {
+            id: inputs.id.value,
             amount: +inputs.amount.value,
             date: new Date(inputs.date.value),
             description: inputs.description.value,
         };
 
+        const idIsValid: boolean = expenseData.id.trim().length > 0;
         const amountIsValid: boolean =
             !isNaN(expenseData.amount) && expenseData.amount > 0;
         const dateIsValid: boolean =
@@ -81,6 +88,10 @@ const ExpenseForm: React.FC<ExpenseFormProps> = ({
             // return;
             setInputs(currentInputs => {
                 return {
+                    id: {
+                        value: currentInputs.id.value,
+                        isValid: idIsValid,
+                    },
                     amount: {
                         value: currentInputs.amount.value,
                         isValid: amountIsValid,
