@@ -1,11 +1,10 @@
-import { Button, StyleSheet, Text, View, TextInput } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import React, { useContext, useLayoutEffect } from 'react';
 import IconButton from '../components/UI/IconButton';
 import { GlobalStyles } from '../constants/styles';
-import CustomButton from '../components/UI/CustomButton';
 import { ExpensesContext } from '../store/expenses-context';
-import Input from '../components/ManageExpense/Input';
 import ExpenseForm from '../components/ManageExpense/ExpenseForm';
+import { storeExpense } from '../util/http';
 
 export type ScreenNavigation = {
     navigation?: any;
@@ -37,7 +36,8 @@ const ManageExpense: React.FC<ScreenNavigation> = ({ route, navigation }) => {
         navigation.goBack();
     };
 
-    const confirmHandler = (expenseData: {
+    const confirmHandler = async (expenseData: {
+        id: string;
         description: string;
         amount: number;
         date: Date;
@@ -45,7 +45,8 @@ const ManageExpense: React.FC<ScreenNavigation> = ({ route, navigation }) => {
         if (isEditing) {
             expenseContext.updateExpense(editedExpenseId, expenseData);
         } else {
-            expenseContext.addExpense(expenseData);
+            const id = await storeExpense(expenseData);
+            expenseContext.addExpense({ ...expenseData, id: id });
         }
         navigation.goBack();
     };
